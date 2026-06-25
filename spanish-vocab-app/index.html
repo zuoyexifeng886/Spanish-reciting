@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西语背单词 - 首页</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="app-header">
+            <h1>📚 西语背单词</h1>
+            <p class="subtitle">DELE A1-B2 智能记忆工具</p>
+        </header>
+
+        <!-- 今日学习概览卡片 -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="todayNew">0</div>
+                    <div class="stat-label">今日新词</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="todayReview">0</div>
+                    <div class="stat-label">待复习</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWords">0</div>
+                    <div class="stat-label">总词汇量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="streakDays">0</div>
+                    <div class="stat-label">连续打卡</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快捷功能入口 -->
+        <section class="quick-actions">
+            <h2 class="section-title">开始学习</h2>
+            <div class="action-grid">
+                <a href="study.html?mode=new" class="action-card primary">
+                    <div class="action-icon">🌱</div>
+                    <div class="action-title">学习新词</div>
+                    <div class="action-desc">今日待学新词</div>
+                </a>
+                <a href="study.html?mode=review" class="action-card secondary">
+                    <div class="action-icon">🔄</div>
+                    <div class="action-title">复习单词</div>
+                    <div class="action-desc">艾宾浩斯记忆曲线</div>
+                </a>
+                <a href="practice.html" class="action-card tertiary">
+                    <div class="action-icon">✍️</div>
+                    <div class="action-title">自测练习</div>
+                    <div class="action-desc">默写/听写/选择</div>
+                </a>
+                <a href="wrong.html" class="action-card warning">
+                    <div class="action-icon">📝</div>
+                    <div class="action-title">错题本</div>
+                    <div class="action-desc">易错单词专项</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 词库管理入口 -->
+        <section class="tools-section">
+            <h2 class="section-title">词库与工具</h2>
+            <div class="tools-grid">
+                <a href="vocabulary.html" class="tool-card">
+                    <span class="tool-icon">📖</span>
+                    <span class="tool-name">词库管理</span>
+                    <span class="tool-arrow">→</span>
+                </a>
+                <a href="settings.html" class="tool-card">
+                    <span class="tool-icon">⚙️</span>
+                    <span class="tool-name">设置</span>
+                    <span class="tool-arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">首页</span>
+            </a>
+            <a href="study.html" class="nav-item">
+                <span class="nav-icon">📖</span>
+                <span class="nav-label">学习</span>
+            </a>
+            <a href="practice.html" class="nav-item">
+                <span class="nav-icon">✏️</span>
+                <span class="nav-label">练习</span>
+            </a>
+            <a href="vocabulary.html" class="nav-item">
+                <span class="nav-icon">📚</span>
+                <span class="nav-label">词库</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">我的</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // 初始化首页数据
+        document.addEventListener('DOMContentLoaded', function() {
+            const stats = getStudyStats();
+            document.getElementById('todayNew').textContent = stats.todayNewCount;
+            document.getElementById('todayReview').textContent = stats.todayReviewCount;
+            document.getElementById('totalWords').textContent = stats.totalWords;
+            document.getElementById('streakDays').textContent = stats.streakDays;
+        });
+    </script>
+</body>
+</html>

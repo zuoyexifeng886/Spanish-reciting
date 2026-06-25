@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自测练习 - 西语背单词</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="page-header">
+            <button class="back-btn" onclick="history.back()">←</button>
+            <h1>自测练习</h1>
+        </header>
+
+        <!-- 练习模式选择 -->
+        <div class="mode-select" id="modeSelect">
+            <h2 class="section-title">选择练习模式</h2>
+            <div class="mode-grid">
+                <div class="mode-card" onclick="startPractice('es2cn')">
+                    <div class="mode-icon">🇪🇸→🇨🇳</div>
+                    <h3>看西语写中文</h3>
+                    <p>看到西班牙语单词，写出中文释义</p>
+                </div>
+                <div class="mode-card" onclick="startPractice('cn2es')">
+                    <div class="mode-icon">🇨🇳→🇪🇸</div>
+                    <h3>看中文写西语</h3>
+                    <p>看到中文释义，拼写出西语单词</p>
+                </div>
+                <div class="mode-card" onclick="startPractice('listening')">
+                    <div class="mode-icon">🎧</div>
+                    <h3>听力听写</h3>
+                    <p>听发音，写出西语单词</p>
+                </div>
+                <div class="mode-card" onclick="startPractice('choice')">
+                    <div class="mode-icon">🔘</div>
+                    <h3>选择题</h3>
+                    <p>四选一，选出正确释义</p>
+                </div>
+            </div>
+
+            <div class="practice-settings">
+                <h3>练习设置</h3>
+                <div class="setting-row">
+                    <label>题目数量</label>
+                    <select id="questionCount">
+                        <option value="10">10题</option>
+                        <option value="20" selected>20题</option>
+                        <option value="30">30题</option>
+                        <option value="50">50题</option>
+                    </select>
+                </div>
+                <div class="setting-row">
+                    <label>词库范围</label>
+                    <select id="wordScope">
+                        <option value="all">全部单词</option>
+                        <option value="learned">已学单词</option>
+                        <option value="wrong">错题本</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习进行中 -->
+        <div class="practice-area" id="practiceArea" style="display:none">
+            <div class="practice-header">
+                <div class="practice-progress">
+                    <span id="currentQ">1</span>/<span id="totalQ">20</span>
+                </div>
+                <div class="practice-score">
+                    正确: <span id="correctCount">0</span>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="practiceProgress"></div>
+            </div>
+
+            <!-- 题目区域 -->
+            <div class="question-card">
+                <div class="question-type" id="questionType">看西语写中文</div>
+                <div class="question-content" id="questionContent">
+                    <h2 class="question-word" id="questionWord">hola</h2>
+                    <button class="pronounce-btn small" onclick="pronounceQuestion()" id="listenBtn" style="display:none">
+                        🔊 再听一遍
+                    </button>
+                </div>
+
+                <!-- 填空题 -->
+                <div class="answer-input" id="answerInputArea">
+                    <input type="text" id="answerInput" placeholder="请输入答案..." autocomplete="off">
+                    <button class="submit-btn" onclick="submitAnswer()">提交</button>
+                </div>
+
+                <!-- 选择题选项 -->
+                <div class="choice-options" id="choiceOptions" style="display:none">
+                    <!-- 选项通过JS动态生成 -->
+                </div>
+
+                <!-- 答案反馈 -->
+                <div class="answer-feedback" id="answerFeedback" style="display:none">
+                    <div class="feedback-icon" id="feedbackIcon">✅</div>
+                    <div class="feedback-text">
+                        <div class="correct-answer" id="correctAnswer"></div>
+                        <div class="your-answer" id="yourAnswer"></div>
+                    </div>
+                    <button class="next-btn" onclick="nextQuestion()">下一题 →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习结果 -->
+        <div class="result-area" id="resultArea" style="display:none">
+            <div class="result-card">
+                <div class="result-icon" id="resultIcon">🎉</div>
+                <h2>练习完成！</h2>
+                <div class="result-score">
+                    <div class="score-big" id="finalScore">0</div>
+                    <div class="score-label">得分</div>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-value" id="totalQuestions">0</span>
+                        <span class="stat-label">总题数</span>
+                    </div>
+                    <div class="result-stat correct">
+                        <span class="stat-value" id="totalCorrect">0</span>
+                        <span class="stat-label">正确</span>
+                    </div>
+                    <div class="result-stat wrong">
+                        <span class="stat-value" id="totalWrong">0</span>
+                        <span class="stat-label">错误</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-value" id="accuracyPercent">0%</span>
+                        <span class="stat-label">正确率</span>
+                    </div>
+                </div>
+                <div class="result-actions">
+                    <button class="btn-primary" onclick="restartPractice()">再来一次</button>
+                    <button class="btn-secondary" onclick="viewWrongAnswers()">查看错题</button>
+                    <button class="btn-secondary" onclick="backToModes()">返回模式选择</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">首页</span>
+        </a>
+        <a href="study.html" class="nav-item">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label">学习</span>
+        </a>
+        <a href="practice.html" class="nav-item active">
+            <span class="nav-icon">✏️</span>
+            <span class="nav-label">练习</span>
+        </a>
+        <a href="vocabulary.html" class="nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">词库</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">我的</span>
+        </a>
+    </nav>
+
+    <script src="js/storage.js"></script>
+    <script src="js/practice.js"></script>
+</body>
+</html>
